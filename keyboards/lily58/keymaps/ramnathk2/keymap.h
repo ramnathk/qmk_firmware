@@ -20,7 +20,7 @@
 #define SHFT_N MT(MOD_RSFT, KC_N)
 #define SHFT_F MT(MOD_RSFT, KC_F)
 #define SHFT_J MT(MOD_RSFT, KC_J)
-#define SHFT_U MT(MOD_RSFT, KC_U)
+#define SHFT_A MT(MOD_RSFT, KC_A) // HNDALT
 
 #define SFT_ENT MT(MOD_LSFT, KC_ENT)
 
@@ -34,9 +34,8 @@
 #define ALT_S MT(MOD_LALT, KC_S)
 #define ALT_I MT(MOD_LALT, KC_I)
 #define ALT_L MT(MOD_LALT, KC_L)
-#define ALT_A MT(MOD_LALT, KC_A)
+#define ALT_O MT(MOD_LALT, KC_O) // HNDALT
 
-#define AGR_X MT(MOD_RALT, KC_X)
 #define AGR_DOT MT(MOD_RALT, KC_DOT)
 #define AGR_COMM MT(MOD_RALT, KC_COMM)
 
