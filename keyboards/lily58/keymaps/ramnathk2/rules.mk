@@ -7,7 +7,7 @@ RGBLIGHT_ENABLE = no      # Enable keyboard RGB underglow
 MOUSEKEY_ENABLE = no       # Mouse keys
 EXTRAKEY_ENABLE = no      # Audio control and System control
 
-#BOOTMAGIC_ENABLE = yes    # Bootmagic lite (only reset)
+BOOTMAGIC_ENABLE = lite    # Bootmagic lite (only reset)
 WPM_ENABLE = yes           # Allows the keyboard to display wpm
 AUTO_SHIFT_ENABLE = yes
 
