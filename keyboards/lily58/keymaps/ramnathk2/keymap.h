@@ -20,13 +20,13 @@
 #define SHFT_N MT(MOD_RSFT, KC_N)
 #define SHFT_F MT(MOD_RSFT, KC_F)
 #define SHFT_J MT(MOD_RSFT, KC_J)
-#define SHFT_U MT(MOD_RSFT, KC_U) // HNDALT
+#define SHFT_A MT(MOD_RSFT, KC_A) // HNDALT
 
 #define SFT_ENT MT(MOD_LSFT, KC_ENT)
 
 #define CTRL_S MT(MOD_LCTL, KC_S)
 #define CTRL_D MT(MOD_LCTL, KC_D)
-#define CTRL_E MT(MOD_LCTL, KC_E)
+#define CTRL_E MT(MOD_LCTL, KC_E) // HNDALT
 #define CTRL_K MT(MOD_LCTL, KC_K)
 #define CTRL_N MT(MOD_LCTL, KC_N)
 
@@ -34,7 +34,7 @@
 #define ALT_S MT(MOD_LALT, KC_S)
 #define ALT_I MT(MOD_LALT, KC_I)
 #define ALT_L MT(MOD_LALT, KC_L)
-#define ALT_A MT(MOD_LALT, KC_A) // HNDALT
+#define ALT_O MT(MOD_LALT, KC_O) // HNDALT
 
 #define AGR_DOT MT(MOD_RALT, KC_DOT)
 #define AGR_COMM MT(MOD_RALT, KC_COMM)
@@ -42,7 +42,7 @@
 #define GUI_A MT(MOD_LGUI, KC_A)
 #define GUI_O MT(MOD_LGUI, KC_O)
 #define GUI_R MT(MOD_LGUI, KC_R)
-#define GUI_I MT(MOD_LGUI, KC_I)
+#define GUI_I MT(MOD_LGUI, KC_I)  // HNDALT
 #define GUI_QUOT MT(MOD_LGUI, KC_QUOT)
 
 
