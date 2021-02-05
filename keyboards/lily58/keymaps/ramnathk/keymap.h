@@ -49,8 +49,8 @@
 #define MED_ESC LT(_MEDR, KC_ESC)
 #define NAV_SPC LT(_NAVR, KC_SPC)
 #define MOS_TAB LT(_MOUR, KC_TAB) // currently unused as i removed mouse keys layer called _MOUR
-#define SYM_ENT LT(_NSSL, KC_ENT)
-#define NUM_BSC LT(_NSL, KC_BSPC)
+#define SYM_ENT LT(_SYML, KC_ENT)
+#define NUM_BSC LT(_NUML, KC_BSPC)
 #define FN_DEL LT(_FUNL, KC_DEL)
 
 #define COLEMAK DF(_COLEMAK)
