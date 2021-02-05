@@ -58,6 +58,7 @@
 
 #define kCmdSht G(KC_LSFT)
 #define kCmdCtrlSft G(S(KC_LCTL))
+#define kOptSht A(KC_LSFT)
 
 enum kSplKeys {
     mBOSSKY = SAFE_RANGE,

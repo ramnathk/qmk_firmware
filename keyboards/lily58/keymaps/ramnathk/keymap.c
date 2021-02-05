@@ -13,6 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include QMK_KEYBOARD_H
 #include "keymap.h"
 #include "string.h"
@@ -43,13 +44,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_COLEMAK] = LAYOUT( \
  //,-----------------------------------------------------.                      ,-----------------------------------------------------.
-     mBOSSKY,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_MEH,\
+     mBOSSKY,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  _______,\
  //|--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------|
      kCmdSht,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                           KC_J,    KC_L,    KC_U,    KC_Y, KC_QUOT, KC_HYPR,\
  //|--------+--------+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------|
- kCmdCtrlSft,   GUI_A,   ALT_R,  CTRL_S,  SHFT_T,    KC_G,                           KC_M,  SHFT_N,  CTRL_E,   ALT_I,   GUI_O, _______,\
+     kOptSht,   GUI_A,   ALT_R,  CTRL_S,  SHFT_T,    KC_G,                           KC_M,  SHFT_N,  CTRL_E,   ALT_I,   GUI_O, _______,\
  //|--------+--------+--------+--------+--------+--------+---------.  ,---------+--------+--------+--------+--------+--------+--------|
-     _______,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,  _______,    _______ ,    KC_K,    KC_H, KC_COMM, AGR_DOT, KC_SLSH, _______,\
+ kCmdCtrlSft,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,  _______,    _______ ,    KC_K,    KC_H, KC_COMM, AGR_DOT, KC_SLSH, _______,\
  //`--------------------------+--------+--------+--------+---------|  |--------+---------+--------+---------+--------------------------'
                                mDblCtrl, MED_ESC, NAV_SPC, KC_TAB,      SYM_ENT,  NUM_BSC,  FN_DEL, NAV_SPC \
                             //`------------------------------------'  `------------------------------------'
@@ -158,7 +159,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const char *read_keylog(void);
 const char *read_keylogs(void);
-bool isBootJump = false;
 
 // 20 fps
 #define FRAME_TIMEOUT (1000/20)
@@ -297,11 +297,6 @@ void oled_task_user(void) {
     if (timer_elapsed(anim_timer) > FRAME_TIMEOUT) {
         anim_timer = timer_read();
 
-        if(isBootJump) {
-            oled_clear();
-            oled_write_P(PSTR("\nBootloader Jump\n"), false);
-            return;
-        }
         if (is_keyboard_master()) {
             render_status();
         } else {
@@ -331,7 +326,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case kBootLoad:
         if (record->event.pressed) {
-            isBootJump = true;
             bootloader_jump();
         }
         break;
