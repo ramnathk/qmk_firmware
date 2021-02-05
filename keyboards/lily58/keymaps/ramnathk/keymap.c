@@ -182,7 +182,6 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) { // {{{
         case ALT_L:
         case ALT_O:
         case AGR_DOT:
-        case AGR_COMM:
         case GUI_A:
         case GUI_O:
         case GUI_R:

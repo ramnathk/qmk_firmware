@@ -37,7 +37,6 @@
 #define ALT_O MT(MOD_LALT, KC_O) // HNDALT
 
 #define AGR_DOT MT(MOD_RALT, KC_DOT)
-#define AGR_COMM MT(MOD_RALT, KC_COMM)
 
 #define GUI_A MT(MOD_LGUI, KC_A)
 #define GUI_O MT(MOD_LGUI, KC_O)
