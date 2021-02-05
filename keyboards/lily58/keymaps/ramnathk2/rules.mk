@@ -12,7 +12,7 @@ WPM_ENABLE = yes           # Allows the keyboard to display wpm
 AUTO_SHIFT_ENABLE = yes
 
 EXTRAFLAGS += -flto
-LOCAL_GLCDFONT = yes
+
 
 SRC +=  ./lib/keylogger.c \
     	./lib/logo_reader.c
