@@ -18,17 +18,16 @@
 
 // Add retro shift and auto shift
 #ifdef AUTO_SHIFT_ENABLE
-  #define RETRO_SHIFT 500
+ // #define RETRO_SHIFT 500
   #define AUTO_SHIFT_TIMEOUT 200
-  #define NO_AUTO_SHIFT_NUMERIC
-  #define NO_AUTO_SHIFT_ALPHA
+  // #define NO_AUTO_SHIFT_NUMERIC
+  // #define NO_AUTO_SHIFT_ALPHA
 #endif
 
 // Fix problems with fast typing and homerow mods
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD_PER_KEY
 #define IGNORE_MOD_TAP_INTERRUPT
-#define TAPPING_FORCE_HOLD_PER_KEY
 
 // Recommended for heavy chording.
 // #define QMK_KEYS_PER_SCAN 4

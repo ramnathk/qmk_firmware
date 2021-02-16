@@ -56,18 +56,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                             //`------------------------------------'  `------------------------------------'
     ),
 
-// this is based on the handsdown ALT layout. 
+// this is based on the handsdown ALT layout. swapped W and Z
     [_HNDALT] = LAYOUT( \
  //,-----------------------------------------------------.                     ,-----------------------------------------------------.
      _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                          KC_6,    KC_7,    KC_8,    KC_9,    KC_0, _______,\
  //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
-     _______,   KC_W ,    KC_G,    KC_H,    KC_M,    KC_K,                          KC_Q,    KC_C,    KC_U,    KC_J, KC_QUOT, _______,\
+     _______,   KC_Z ,    KC_G,    KC_H,    KC_M,    KC_K,                          KC_Q,    KC_C,    KC_U,    KC_J, KC_QUOT, _______,\
  //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
      _______,   GUI_R,   ALT_S,  CTRL_N,  SHFT_T,    KC_F,                          KC_Y,  SHFT_A,  CTRL_E,   ALT_O,   GUI_I, _______,\
  //|--------+--------+--------+--------+--------+--------+---------.  ,--------+--------+--------+--------+--------+--------+--------|
-     _______,    KC_X,    KC_B,    KC_L,    KC_D,    KC_V,  _______,    _______,    KC_Z,    KC_P, KC_COMM, AGR_DOT,  KC_SLSH, _______,\
+     _______,    KC_X,    KC_B,    KC_L,    KC_D,    KC_V,  _______,    _______,    KC_W,    KC_P, KC_COMM, AGR_DOT,  KC_SLSH, _______,\
  //`--------------------------+--------+--------+--------+---------|  |--------+--------+--------+--------+--------+-----------------'
-                                 _______, MED_ESC, NAV_SPC, KC_TAB,    SYM_ENT, NUM_BSC,  FN_DEL, _______ \
+                                 _______, _______, _______, _______,    _______, _______,  _______, _______ \
                             //`------------------------------------'  `------------------------------------'
     ),
 
@@ -81,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //|--------+--------+--------+--------+--------+--------+---------.  ,---------+--------+--------+--------+--------+---------+--------|
      _______,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  _______,    _______,     KC_N,    KC_M, KC_COMM, AGR_DOT,  KC_SLSH, _______,\
  //`--------------------------+--------+--------+--------+---------|  |--------+---------+--------+--------+---------------------------'
-                                 _______, MED_ESC, NAV_SPC, KC_TAB,    SYM_ENT, NUM_BSC,  FN_DEL, _______ \
+                                 _______, _______, _______, _______,    _______, _______,  _______, _______ \
                             //`------------------------------------'  `------------------------------------'
     ),
 
@@ -189,21 +189,21 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) { // {{{
         case GUI_QUOT:
             // This actually *disables* the permissive hold for these keys.
             // See issue https://github.com/qmk/qmk_firmware/issues/8999
-            return true;
-        default:
             return false;
+        default:
+            return true;
     }
 }
 
-bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-// only the NUM_BSC mod key allows for tapping force hold 
-        case NUM_BSC:
-            return false;
-        default:
-            return true;
-    }
-}
+// bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+// // only the NUM_BSC mod key allows for tapping force hold 
+//         case NUM_BSC:
+//             return false;
+//         default:
+//             return true;
+//     }
+// }
 
 #ifdef OLED_DRIVER_ENABLE
 
@@ -256,14 +256,14 @@ static void render_status(void) {
         case _QWERT:
             switch (get_highest_layer(default_layer_state)) {
               case _COLEMAK:
-                oled_write_P(PSTR("Colemak DHm"), false);
+                oled_write_P(PSTR("Colemak DHm\n"), false);
               break;
               case _QWERT:
-                 oled_write_P(PSTR("Qwerty"), false);
+                 oled_write_P(PSTR("Qwerty\n"), false);
                break;
                default:
-               oled_write_P(PSTR("Handsdown Alt"), false);
-        }
+               oled_write_P(PSTR("Handsdown Alt\n"), false);
+            }
         break;
         case _MEDR:
             oled_write_P(PSTR("Media\n"), false);
