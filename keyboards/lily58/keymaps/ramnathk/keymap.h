@@ -59,9 +59,14 @@
 #define kCmdSht G(KC_LSFT)
 #define kCmdCtrlSft G(S(KC_LCTL))
 #define kOptSht A(KC_LSFT)
+#define kAGIN SCMD(KC_Z)
+#define kUNDO LCMD(KC_Z)
+#define kCUT LCMD(KC_X)
+#define kCOPY LCMD(KC_C)
+#define kPSTE LCMD(KC_V)
 
 enum kSplKeys {
     mBOSSKY = SAFE_RANGE,
     mDblCtrl,
-    kBootLoad,
+    mBootLoad,
 };

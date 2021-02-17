@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
      _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                       _______, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, _______,\
  //|--------+--------+--------+--------+--------+--------+---------.  ,--------+--------+--------+--------+--------+--------+--------|
-     _______, _______, _______, _______, _______, _______,kBootLoad,    _______, _______, _______, _______, _______, _______, _______,\
+     _______, _______, _______, _______, _______, _______,mBootLoad,    _______, _______, _______, _______, _______, _______, _______,\
  //`--------------------------+--------+--------+--------+---------|  |--------+--------+--------+--------+--------+-----------------'
                                 _______, _______, _______,  _______,    KC_MSTP, KC_MPLY, KC_MUTE, _______ \
                             //`------------------------------------'  `-----------------------------------'
@@ -103,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
      _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,\
  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     _______, _______, _______, _______, _______, _______,                      KC_AGIN, KC_UNDO,  KC_CUT, KC_COPY, KC_PSTE, _______,\
+     _______, _______, _______, _______, _______, _______,                        kAGIN,   kUNDO,    kCUT,   kCOPY,   kPSTE, _______,\
  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                      KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, _______,\
  //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
@@ -309,26 +309,22 @@ void oled_task_user(void) {
 #endif // for OLED Driver Enable
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case mBOSSKY: // maps to a workflow in alfred
-        if (record->event.pressed) {
-            SEND_STRING(SS_LGUI(SS_LSFT(SS_LALT(SS_LCTL("1")))));
-        }
-        break;
+    if (record->event.pressed) {
+        switch (keycode) {
+            case mBOSSKY: // maps to a workflow in alfred
+                SEND_STRING(SS_LGUI(SS_LSFT(SS_LALT(SS_LCTL("1")))));
+                break;
 
-        case mDblCtrl:
-        if (record->event.pressed) {
+            case mDblCtrl:
             // when keycode QMKBEST is pressed
             //SEND_STRING("QMK is the best thing ever!");
-            SEND_STRING(SS_TAP(X_LCTL) SS_TAP(X_LCTL));
-        }
-        break;
+                SEND_STRING(SS_TAP(X_LCTL) SS_TAP(X_LCTL));
+                break;
 
-        case kBootLoad:
-        if (record->event.pressed) {
-            bootloader_jump();
+            case mBootLoad:
+                bootloader_jump();
+                break;
         }
-        break;
     }
     return true;
 };
