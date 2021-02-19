@@ -37,26 +37,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    include "nodebug.h"
 #endif
 
-#ifdef POINTING_DEVICE_ENABLE
-#    include "pointing_device.h"
-#endif
-
 int tp_buttons;
 
-#if defined(RETRO_TAPPING) || defined(RETRO_TAPPING_PER_KEY)
+#if defined RETRO_TAPPING || defined RETRO_SHIFT
 int retro_tapping_counter = 0;
 #endif
 
+#ifdef RETRO_SHIFT
+#    include "quantum.h"
+#endif
+
 #ifdef FAUXCLICKY_ENABLE
-#    include "fauxclicky.h"
+#    include <fauxclicky.h>
 #endif
 
 #ifdef IGNORE_MOD_TAP_INTERRUPT_PER_KEY
 __attribute__((weak)) bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) { return false; }
-#endif
-
-#ifdef RETRO_TAPPING_PER_KEY
-__attribute__((weak)) bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) { return false; }
 #endif
 
 #ifndef TAP_CODE_DELAY
@@ -75,7 +71,7 @@ void action_exec(keyevent_t event) {
         dprint("EVENT: ");
         debug_event(event);
         dprintln();
-#if defined(RETRO_TAPPING) || defined(RETRO_TAPPING_PER_KEY)
+#if defined RETRO_TAPPING || defined RETRO_SHIFT
         retro_tapping_counter++;
 #endif
     }
@@ -228,19 +224,6 @@ void process_record_handler(keyrecord_t *record) {
     process_action(record, action);
 }
 
-#if defined(PS2_MOUSE_ENABLE) || defined(POINTING_DEVICE_ENABLE)
-void register_button(bool pressed, enum mouse_buttons button) {
-#    ifdef PS2_MOUSE_ENABLE
-    tp_buttons = pressed ? tp_buttons | button : tp_buttons & ~button;
-#    endif
-#    ifdef POINTING_DEVICE_ENABLE
-    report_mouse_t currentReport = pointing_device_get_report();
-    currentReport.buttons        = pressed ? currentReport.buttons | button : currentReport.buttons & ~button;
-    pointing_device_set_report(currentReport);
-#    endif
-}
-#endif
-
 /** \brief Take an action and processes it.
  *
  * FIXME: Needs documentation.
@@ -250,10 +233,16 @@ void process_action(keyrecord_t *record, action_t action) {
 #ifndef NO_ACTION_TAPPING
     uint8_t tap_count = record->tap.count;
 #endif
+#ifdef RETRO_SHIFT
+    static uint16_t retro_shift_start_time;
+#endif
 
     if (event.pressed) {
         // clear the potential weak mods left by previously pressed keys
         clear_weak_mods();
+#ifdef RETRO_SHIFT
+        retro_shift_start_time = event.time;
+#endif
     }
 
 #ifndef NO_ACTION_ONESHOT
@@ -425,23 +414,15 @@ void process_action(keyrecord_t *record, action_t action) {
             if (event.pressed) {
                 mousekey_on(action.key.code);
                 switch (action.key.code) {
-#    if defined(PS2_MOUSE_ENABLE) || defined(POINTING_DEVICE_ENABLE)
+#    ifdef PS2_MOUSE_ENABLE
                     case KC_MS_BTN1:
-                        register_button(true, MOUSE_BTN1);
+                        tp_buttons |= (1 << 0);
                         break;
                     case KC_MS_BTN2:
-                        register_button(true, MOUSE_BTN2);
+                        tp_buttons |= (1 << 1);
                         break;
                     case KC_MS_BTN3:
-                        register_button(true, MOUSE_BTN3);
-                        break;
-#    endif
-#    ifdef POINTING_DEVICE_ENABLE
-                    case KC_MS_BTN4:
-                        register_button(true, MOUSE_BTN4);
-                        break;
-                    case KC_MS_BTN5:
-                        register_button(true, MOUSE_BTN5);
+                        tp_buttons |= (1 << 2);
                         break;
 #    endif
                     default:
@@ -451,23 +432,15 @@ void process_action(keyrecord_t *record, action_t action) {
             } else {
                 mousekey_off(action.key.code);
                 switch (action.key.code) {
-#    if defined(PS2_MOUSE_ENABLE) || defined(POINTING_DEVICE_ENABLE)
+#    ifdef PS2_MOUSE_ENABLE
                     case KC_MS_BTN1:
-                        register_button(false, MOUSE_BTN1);
+                        tp_buttons &= ~(1 << 0);
                         break;
                     case KC_MS_BTN2:
-                        register_button(false, MOUSE_BTN2);
+                        tp_buttons &= ~(1 << 1);
                         break;
                     case KC_MS_BTN3:
-                        register_button(false, MOUSE_BTN3);
-                        break;
-#    endif
-#    ifdef POINTING_DEVICE_ENABLE
-                    case KC_MS_BTN4:
-                        register_button(false, MOUSE_BTN4);
-                        break;
-                    case KC_MS_BTN5:
-                        register_button(false, MOUSE_BTN5);
+                        tp_buttons &= ~(1 << 2);
                         break;
 #    endif
                     default:
@@ -729,24 +702,53 @@ void process_action(keyrecord_t *record, action_t action) {
 #endif
 
 #ifndef NO_ACTION_TAPPING
-#    if defined(RETRO_TAPPING) || defined(RETRO_TAPPING_PER_KEY)
+#    if defined RETRO_TAPPING || defined RETRO_SHIFT
     if (!is_tap_action(action)) {
         retro_tapping_counter = 0;
     } else {
         if (event.pressed) {
             if (tap_count > 0) {
                 retro_tapping_counter = 0;
+            } else {
             }
         } else {
             if (tap_count > 0) {
                 retro_tapping_counter = 0;
             } else {
-                if (
-#        ifdef RETRO_TAPPING_PER_KEY
-                    get_retro_tapping(get_event_keycode(record->event, false), record) &&
-#        endif
-                    retro_tapping_counter == 2) {
+                if (retro_tapping_counter == 2) {
+#        ifdef RETRO_SHIFT
+                    if(!(RETRO_SHIFT + 0) || TIMER_DIFF_16(event.time, retro_shift_start_time) < (RETRO_SHIFT + 0)){
+
+                        switch (action.layer_tap.code) {
+#            ifndef NO_AUTO_SHIFT_ALPHA
+                            case KC_A ... KC_Z:
+#            endif
+#            ifndef NO_AUTO_SHIFT_NUMERIC
+                            case KC_1 ... KC_0:
+#            endif
+#            ifndef NO_AUTO_SHIFT_SPECIAL
+                            case KC_TAB:
+                            case KC_MINUS ... KC_SLASH:
+                            case KC_NONUS_BSLASH:
+#            endif
+#            ifndef AUTO_SHIFT_MODIFIERS
+                                if (get_mods()) {
+                                    tap_code(action.layer_tap.code);
+                                    break;
+                                }
+#            endif
+                                tap_code16(LSFT(action.layer_tap.code));
+                                break;
+                            default:
+#            ifdef RETRO_TAPPING
+                                tap_code(action.layer_tap.code);
+#            endif
+                                ;
+                        }
+                    }
+#        else
                     tap_code(action.layer_tap.code);
+#        endif
                 }
                 retro_tapping_counter = 0;
             }
