@@ -18,8 +18,9 @@
 
 // Add retro shift and auto shift
 #ifdef AUTO_SHIFT_ENABLE
- // #define RETRO_SHIFT 500
+  #define RETRO_SHIFT 500  
   #define AUTO_SHIFT_TIMEOUT 200
+  // #define AUTO_SHIFT_MODIFIERS
   // #define NO_AUTO_SHIFT_NUMERIC
   // #define NO_AUTO_SHIFT_ALPHA
 #endif
